@@ -5,11 +5,11 @@ customIngress:
   enabled: false
   annotations: {}
   ingressClassName: nginx
-  host: moon.aerokube.local
+  host: moon.moon.svc.cluster.local
   tls: []
-  #- secretName: moon-tls
-  #  hosts:
-  #  - moon.aerokube.local
+  - secretName: ngnix-ingressgateway-certs
+    hosts:
+    - moon-np.dell.com
   paths:
   - path: /
     port: 8080
@@ -31,12 +31,12 @@ ingress:
   ##
   ## Ingress host. Replace this with your domain name.
   ##
-  host: moon.aerokube.local
+  host: moon.moon.svc.cluster.local
 
   ##
   ## TLS settings. When provided Ingress switches to HTTPS-only mode.
   ##
-  tlsCert:
+  tlsCert: 
   tlsKey:
 
   ##
@@ -51,6 +51,9 @@ ingress:
   ##
   proxyBodySize: 128m
 
+  type: LoadBalancer
+  
+  
   ##
   ## Set to true in Openshift.
   ##
@@ -64,7 +67,7 @@ deployment:
   ##
   ## Total number of Moon pods. Default is 2.
   ##
-  replicas:
+  replicas: 5
 
   ##
   ## Moon pods graceful shutdown timeout. Default is 360 seconds.
@@ -84,24 +87,24 @@ deployment:
   ##
   ## Moon container CPU limit. Default is 0.5.
   ##
-  moonCPULimit:
+  moonCPULimit: 1.0
 
   ##
   ## Moon container CPU request. Default is 0.2.
   ##
-  moonCPURequest:
+  moonCPURequest: 0.25
 
   ##
   ## Moon container memory limit. Default is 256Mi.
   ## We recommend setting the same value for memory request and limit.
   ##
-  moonMemoryLimit:
+  moonMemoryLimit: 
 
   ##
   ## Moon container memory request. Default is 256Mi.
   ##
-  moonMemoryRequest:
-
+  moonMemoryRequest: 
+  
   ##
   ## Moon-conf image repository. Default is quay.io/aerokube/moon-conf.
   ##
@@ -276,12 +279,12 @@ configs:
             cpu: 100m
             memory: 128Mi
     storage:
-      accessKey: ""
-      bucket: ""
-      endpoint: ""
+      accessKey: "dur1002112usr"
+      bucket: "moon-blobs-np"
+      endpoint: "http://cloudstorage.onefs.dell.com"
       filename: ""
       pattern: ""
-      secretKey: ""
+      secretKey: "pTGENlbPu6ZLnMavmjXQzE7Atvi7bS4QSjpyXiip"
 
 ##
 ## Available browsers set objects.
@@ -332,12 +335,12 @@ browsers:
 ##
 ## Available quotas. If you need to have multiple quota objects - simply add them below:
 ##
-## quota:
-##   moon: null
-##   alfa-team:
-##     namespace: alfa
-##   beta-team:
-##     namespace: beta
+quota:
+  moon: null
+  alfa-team:
+    namespace: alfa
+  beta-team:
+    namespace: beta
 ##
 quota:
   ##
@@ -351,4 +354,4 @@ quota:
 ##
 ## License key. When empty default free license key is automatically used.
 ##
-license:
+license: STZWSHRsR0JsaFVteE1TMDlaYW1NTFlDWUJSTDh3eEdaN2hERmVaalZ5eDhUZFAxT0Rxdzgxd25HRUVXbWFWVHRFRlFaNUNsUnNObFVEeEZ1UnJKMm1rY0Y1N2VWTW1PSzYxSytZUWZsTExhRndvOUtqMU9vWlpZdDNBdVo5VTZ4NDFINmFnWFBmTmZnYUZBNG1SWkRFNEpXZTBLdHhBK200dWtVNkkrS2FjaTQ3eEdhd25zNzNyRzBFczRJcTFRd3hCZHUrUzBnTUc2VTA5NlhzQUhyTE1Hcm56OHJ6UHltMldmUEVWN21VRGNTRVpZZXVMOHRpWFZIMWZUMVB3OWdUbEx0ek9VbWczMGdERnJTSzEwbnZTRjhKTjgvZE5jMmhHakRCM1JrM0l2elRPWUNkNndUL1pBTTRWditBS25URlppSWV2V29kaDlrZklnbjl3WDU4ZFNFL3AyK1NGSUZHMjVwU3JzRjZUdFZwRmN3a3diRE9PVVpCdkh2cFhQbmZVMDAwZ0hEVm41eUc5T1Bjd0VCbFBXQTJ3RmNxQm54alZsUG5JNmFXM2RRdmVYRmlzOTM5cEE4VzhEZTRRVFZ1YXJZeitVczBnRkM0WmVTdlBDdGI1ZjFPSkN4QVY5emFhUjZMVUcvOGhQMTd4aGZnbVliRi80blNTUkVFck1QZjFaMVZLMFB2MkJJK0lLMEZqYk9uMmFVeW05WUNtTkpjeEJMS2oxMjR2U1FTL2RLV3NDSE5HbnZEbzBuSUpkUCt2bEtQd3NQWnRxcG8yTGNCTTJHR3ZwQU9wcE8wdzFuYnp1aWJDTTE0RHlTTGhSeHQzZWlydEFSd0tmZyszdkxqVTArcVdCRG1sRTBFSEFONjBJcXpUS0ZFL0kxQWtvUTI3azRxb3JsQzA9O2V5SnNhV05sYm5ObFpTSTZJa1JsYkd3Z1NXNWpMaUlzSW5CeWIyUjFZM1FpT2lKTmIyOXVJaXdpYldGNFUyVnpjMmx2Ym5NaU9qVXdNQ3dpZEc4aU9qRTJORGczTnpFeU1EQjk=
